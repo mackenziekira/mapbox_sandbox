@@ -26,6 +26,7 @@
 
 <div id='map'></div>
 
+<script src="https://code.jquery.com/jquery.js"></script>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFja2Vuemlla2lyYSIsImEiOiJjaXl1bTg5dW8wMTZhMnFsbWtwZmZiOTkwIn0.zznriHEFnb9uoUyZQ77Cng';
 var map = new mapboxgl.Map({
@@ -48,12 +49,19 @@ var geolocater = new mapboxgl.GeolocateControl({
     }
 });
 
+function showPopup(data) {
+    console.log(data);
+}
+
 // function that calls the iss api for the next pass of iss over a given lat lon!
-function call_iss_api(lat, lon) {
+function callIssApi(lat, lon) {
     var iss_url = 'http://api.open-notify.org/iss-pass.json';
     var location = {'lat': lat, 'lon': lon};
-    console.log(location);
-    // var response = $.get(iss_url, params=location.json())
+    $.ajax({
+        url: iss_url, 
+        data: location,
+        success: showPopup
+    });
 
     // if 'response' in response:
     //     next_pass = response['response'][0]['risetime']
@@ -98,7 +106,7 @@ map.on('load', function() {
     geolocater.on('geolocate', function(data) {
         var lat = data['coords']['latitude'];
         var lon = data['coords']['longitude'];
-        call_iss_api(lat, lon);
+        callIssApi(lat, lon);
     });
 });
 </script>
