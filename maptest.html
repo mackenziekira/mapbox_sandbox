@@ -74,9 +74,12 @@ map.on('load', function() {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection and add a symbol that matches the result.
     geocoder.on('result', function(ev) {
+        debugger;
         map.getSource('single-point').setData(ev.result.geometry);
     });
 
+
+    // Listen for geolocate event triggered when user clicks geolocator buttom
     geolocater.on('geolocate', function(data) {
         console.log(data);
     });
