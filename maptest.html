@@ -1,4 +1,7 @@
 <!-- playing around with geocoder -->
+<!-- mapbox code heavily influenced by https://www.mapbox.com/mapbox-gl-js/examples/ -->
+<!-- iss flyover code inspired by https://www.twilio.com/blog/2015/11/international-space-station-notifications-with-python-redis-queue-and-twilio-copilot.html -->
+
 
 <!DOCTYPE html>
 <html>
@@ -51,6 +54,13 @@ var geolocater = new mapboxgl.GeolocateControl({
 
 function showPopup(data) {
   console.log(data);
+  if ('response' in data) {
+    var nextPass = data['response'][0]['risetime'];
+    console.log(nextPass);
+    var nextPassDatetime = (new Date(nextPass)).toUTCString();
+    console.log(nextPassDatetime);
+  }
+
 
 
     // if 'response' in response:
@@ -64,10 +74,10 @@ function showPopup(data) {
 
 // function that calls the iss api for the next pass of iss over a given lat lon
 function callIssApi(lat, lon) {
-  var iss_url = 'http://api.open-notify.org/iss-pass.json';
+  var issUrl = 'http://api.open-notify.org/iss-pass.json';
   var location = {'lat': lat, 'lon': lon};
   $.ajax({
-    url: iss_url, 
+    url: issUrl, 
     data: location,
     success: showPopup
   });
