@@ -51,17 +51,7 @@ var geolocater = new mapboxgl.GeolocateControl({
 
 function showPopup(data) {
     console.log(data);
-}
 
-// function that calls the iss api for the next pass of iss over a given lat lon!
-function callIssApi(lat, lon) {
-    var iss_url = 'http://api.open-notify.org/iss-pass.json';
-    var location = {'lat': lat, 'lon': lon};
-    $.ajax({
-        url: iss_url, 
-        data: location,
-        success: showPopup
-    });
 
     // if 'response' in response:
     //     next_pass = response['response'][0]['risetime']
@@ -70,6 +60,17 @@ function callIssApi(lat, lon) {
     //     return next_pass_datetime
     // else:
     //     print('no response for {}, {}'.format(lat, lon))
+}
+
+// function that calls the iss api for the next pass of iss over a given lat lon
+function callIssApi(lat, lon) {
+    var iss_url = 'http://api.open-notify.org/iss-pass.json';
+    var location = {'lat': lat, 'lon': lon};
+    $.ajax({
+        url: iss_url, 
+        data: location,
+        success: showPopup
+    });
 }
 
 map.addControl(geolocater);
