@@ -25,6 +25,7 @@
 </style>
 
 <div id='map'></div>
+
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFja2Vuemlla2lyYSIsImEiOiJjaXl1bTg5dW8wMTZhMnFsbWtwZmZiOTkwIn0.zznriHEFnb9uoUyZQ77Cng';
 var map = new mapboxgl.Map({
@@ -35,7 +36,13 @@ var map = new mapboxgl.Map({
 });
 
 // Add geolocate control to the map.
-map.addControl(new mapboxgl.GeolocateControl());
+var geolocater = new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    }
+});
+
+map.addControl(geolocater);
 
 var geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken
@@ -68,6 +75,10 @@ map.on('load', function() {
     // makes a selection and add a symbol that matches the result.
     geocoder.on('result', function(ev) {
         map.getSource('single-point').setData(ev.result.geometry);
+    });
+
+    geolocater.on('geolocate', function(data) {
+        console.log(data);
     });
 });
 </script>
