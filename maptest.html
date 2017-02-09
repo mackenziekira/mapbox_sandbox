@@ -52,6 +52,10 @@ var geolocater = new mapboxgl.GeolocateControl({
   }
 });
 
+function setPopupHTML(data) {
+  $('.mapboxgl-popup-content').html(data);
+}
+
 function unpackISSData(data) {
   if ('response' in data) {
     var nextPass = data['response'][0]['risetime'];
@@ -59,6 +63,7 @@ function unpackISSData(data) {
   } else {
     var nextPassDatetime = "No next pass could be found.";
   }
+  setPopupHTML(nextPassDatetime);
   }
 
 // function that calls the iss api for the next pass of iss over a given lat lon
@@ -108,10 +113,9 @@ map.on('load', function() {
       var lat = data['coords']['latitude'];
       var lon = data['coords']['longitude'];
 
-      console.log(lat, lon);
       var popup = new mapboxgl.Popup({closeOnClick: false})
         .setLngLat([lon, lat])
-        .setHTML('<h1>Hello World!</h1>')
+        .setHTML('')
         .addTo(map);
 
       callIssApi(lat, lon);
