@@ -52,8 +52,15 @@ var geolocater = new mapboxgl.GeolocateControl({
   }
 });
 
+function makePopup(lat, lon) {
+  var popup = new mapboxgl.Popup({closeOnClick: false})
+    .setLngLat([lon, lat])
+    .setHTML('')
+    .addTo(map);
+}
+
 function setPopupHTML(data) {
-  $('.mapboxgl-popup-content').html(data);
+  $('.mapboxgl-popup-content').html('<p>Next ISS flyover for your location is:</p><p>' + data + '</p>');
 }
 
 function unpackISSData(data) {
@@ -103,8 +110,11 @@ map.on('load', function() {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection and add a symbol that matches the result.
     geocoder.on('result', function(ev) {
-      debugger;
+      lat = ev.result.center[1]
+      lon = ev.result.center[0]
       map.getSource('single-point').setData(ev.result.geometry);
+      makePopup(lat, lon);
+      callIssApi(lat, lon);
     });
 
 
@@ -112,12 +122,7 @@ map.on('load', function() {
     geolocater.on('geolocate', function(data) {
       var lat = data['coords']['latitude'];
       var lon = data['coords']['longitude'];
-
-      var popup = new mapboxgl.Popup({closeOnClick: false})
-        .setLngLat([lon, lat])
-        .setHTML('')
-        .addTo(map);
-
+      makePopup(lat, lon);
       callIssApi(lat, lon);
     });
   });
