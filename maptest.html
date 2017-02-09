@@ -110,7 +110,7 @@ map.on('load', function() {
 
       console.log(lat, lon);
       var popup = new mapboxgl.Popup({closeOnClick: false})
-        .setLngLat([lat, lon])
+        .setLngLat([lon, lat])
         .setHTML('<h1>Hello World!</h1>')
         .addTo(map);
 
