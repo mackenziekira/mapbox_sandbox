@@ -52,24 +52,13 @@ var geolocater = new mapboxgl.GeolocateControl({
   }
 });
 
-function showPopup(data) {
-  console.log(data);
+function unpackISSData(data) {
   if ('response' in data) {
     var nextPass = data['response'][0]['risetime'];
-    console.log(nextPass);
     var nextPassDatetime = (new Date(nextPass)).toUTCString();
-    console.log(nextPassDatetime);
+  } else {
+    var nextPassDatetime = "No next pass could be found.";
   }
-
-
-
-    // if 'response' in response:
-    //     next_pass = response['response'][0]['risetime']
-    //     next_pass_datetime = datetime.fromtimestamp(next_pass, tz=pytz.utc)
-    //     print('next pass for {}, {} is: {}'.format(lat, lon, next_pass_datetime))
-    //     return next_pass_datetime
-    // else:
-    //     print('no response for {}, {}'.format(lat, lon))
   }
 
 // function that calls the iss api for the next pass of iss over a given lat lon
@@ -79,7 +68,7 @@ function callIssApi(lat, lon) {
   $.ajax({
     url: issUrl, 
     data: location,
-    success: showPopup
+    success: unpackISSData
   });
 }
 
@@ -109,6 +98,7 @@ map.on('load', function() {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection and add a symbol that matches the result.
     geocoder.on('result', function(ev) {
+      debugger;
       map.getSource('single-point').setData(ev.result.geometry);
     });
 
@@ -117,6 +107,13 @@ map.on('load', function() {
     geolocater.on('geolocate', function(data) {
       var lat = data['coords']['latitude'];
       var lon = data['coords']['longitude'];
+
+      console.log(lat, lon);
+      var popup = new mapboxgl.Popup({closeOnClick: false})
+        .setLngLat([lat, lon])
+        .setHTML('<h1>Hello World!</h1>')
+        .addTo(map);
+
       callIssApi(lat, lon);
     });
   });
