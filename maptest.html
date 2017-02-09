@@ -65,10 +65,9 @@ function setPopupHTML(data) {
 
 function unpackISSData(data) {
   if ('response' in data) {
-    var nextPass = data['response'][0]['risetime'];
     debugger;
+    var nextPass = data['response'][0]['risetime'];
     var nextPassDatetime = (new Date(nextPass * 1000)).toUTCString();
-
   } else {
     var nextPassDatetime = "No next pass could be found.";
   }
@@ -118,6 +117,8 @@ map.on('load', function() {
       makePopup(lat, lon);
       callIssApi(lat, lon);
     });
+
+    // sample api query, with proximity and autocomplete options enabled: https://api.mapbox.com/geocoding/v5/mapbox.places/2221%20war.json?access_token=pk.eyJ1IjoibWFja2Vuemlla2lyYSIsImEiOiJjaXl1bTg5dW8wMTZhMnFsbWtwZmZiOTkwIn0.zznriHEFnb9uoUyZQ77Cng&proximity=-122.3,37.3&autocomplete=true
 
 
     // Listen for geolocate event triggered when user clicks geolocator buttom
