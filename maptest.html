@@ -54,9 +54,9 @@ var geolocater = new mapboxgl.GeolocateControl({
 
 function makePopup(lat, lon) {
   var popup = new mapboxgl.Popup({closeOnClick: false})
-    .setLngLat([lon, lat])
-    .setHTML('')
-    .addTo(map);
+  .setLngLat([lon, lat])
+  .setHTML('')
+  .addTo(map);
 }
 
 function setPopupHTML(data) {
@@ -71,7 +71,7 @@ function unpackISSData(data) {
     var nextPassDatetime = "No next pass could be found.";
   }
   setPopupHTML(nextPassDatetime);
-  }
+}
 
 // function that calls the iss api for the next pass of iss over a given lat lon
 function callIssApi(lat, lon) {
