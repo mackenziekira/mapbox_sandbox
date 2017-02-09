@@ -65,7 +65,6 @@ function setPopupHTML(data) {
 
 function unpackISSData(data) {
   if ('response' in data) {
-    debugger;
     var nextPass = data['response'][0]['risetime'];
     var nextPassDatetime = (new Date(nextPass * 1000)).toUTCString();
   } else {
