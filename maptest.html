@@ -59,6 +59,10 @@ function makePopup(lat, lon) {
   .addTo(map);
 }
 
+function setPopupHTMLError(data) {
+  $('.mapboxgl-popup-content').html('<p>Next ISS flyover for your location is:</p><p>' + data.status + ' error from ISS API</p>');
+}
+
 function setPopupHTML(data) {
   $('.mapboxgl-popup-content').html('<p>Next ISS flyover for your location is:</p><p>' + data + '</p>');
 }
@@ -80,7 +84,8 @@ function callIssApi(lat, lon) {
   $.ajax({
     url: issUrl, 
     data: location,
-    success: unpackISSData
+    success: unpackISSData,
+    error: setPopupHTMLError
   });
 }
 
@@ -110,6 +115,7 @@ map.on('load', function() {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection and add a symbol that matches the result.
     geocoder.on('result', function(ev) {
+      $('.mapboxgl-popup').remove();
       lat = ev.result.center[1]
       lon = ev.result.center[0]
       map.getSource('single-point').setData(ev.result.geometry);
@@ -122,6 +128,7 @@ map.on('load', function() {
 
     // Listen for geolocate event triggered when user clicks geolocator buttom
     geolocater.on('geolocate', function(data) {
+      $('.mapboxgl-popup').remove();
       var lat = data['coords']['latitude'];
       var lon = data['coords']['longitude'];
       makePopup(lat, lon);
